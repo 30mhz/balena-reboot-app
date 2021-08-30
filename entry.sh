@@ -1,5 +1,14 @@
 #!/bin/sh
 
+mkdir /mnt/sdcard
+mount /dev/mmcblk0p1 /mnt/sdcard
+DATALOGGER=/mnt/sdcard/$(date +'%s')
+ping -c 4 -I eth0 10.30.30.1 > $DATALOGGER
+dmesg >> $DATALOGGER
+sync
+umount /dev/mmcblk0p1
+
+
 set -x
 
 if [ ! -e /data/fcount ]; then
