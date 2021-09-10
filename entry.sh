@@ -19,6 +19,12 @@ count=$(cat /data/fcount)
 count=$(expr ${count} + 1)
 echo ${count} > /data/fcount
 
+if dmesg | grep -q 'MDIO device at address 0 is missing'; then
+	echo "PHY not detected, idling forever..."
+	rm -f /data/fcount
+	tail -f /dev/null
+fi
+
 if [ "${count}" -gt 101 ]; then
 	echo "Completed reboot test"
 	rm -f /data/fcount
